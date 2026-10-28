@@ -50,7 +50,7 @@ export interface ReporteAlertaStock {
 }
 
 export interface ResumenReportes {
-  prepizzas: ReportePrepizzas;
+  prepizzas: ReportePrepizzas | null;
   resumenGeneral: { ventas: number; cobrosPrepizzas: number; deudaPrepizzas: number };
   periodo: {
     desde: string;

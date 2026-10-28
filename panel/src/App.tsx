@@ -47,7 +47,7 @@ export default function App() {
           <Route path="pedidos" element={<RoleRoute><ListaPedidos /></RoleRoute>} />
           <Route path="cocina" element={<RoleRoute kitchen><Cocina /></RoleRoute>} />
           <Route path="caja" element={<RoleRoute><Caja /></RoleRoute>} />
-          <Route path="prepizzas" element={<RoleRoute><Prepizzas /></RoleRoute>} />
+          <Route path="prepizzas" element={<RoleRoute prepizzasOnly><Prepizzas /></RoleRoute>} />
           <Route path="stock" element={<RoleRoute><StockManager /></RoleRoute>} />
           <Route path="reportes" element={<RoleRoute><Reportes /></RoleRoute>} />
           <Route path="crear-producto" element={<RoleRoute><ProductoManager /></RoleRoute>} />

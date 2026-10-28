@@ -1,3 +1,5 @@
+> Referencia del módulo heredado. En Sistema Burger está deshabilitado por defecto (`ENABLE_PREPIZZAS=false`). No representa producción de medallones ni forma parte de la operación actual.
+
 # Gestión de prepizzas
 
 La sección `/panel/prepizzas` reúne Stock, Comercios y Pedidos y entregas.

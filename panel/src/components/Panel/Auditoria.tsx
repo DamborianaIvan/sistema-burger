@@ -428,7 +428,7 @@ const Auditoria = () => {
               >
                 <MenuItem value="">Todas</MenuItem>
                 {ENTIDADES.map((item) => (
-                  <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+                  <MenuItem key={item.value} value={item.value}>{item.value === "PREPIZZA" && !getSession()?.features?.prepizzas ? "Prepizzas (histórico)" : item.label}</MenuItem>
                 ))}
               </Select>
             </FormControl>
