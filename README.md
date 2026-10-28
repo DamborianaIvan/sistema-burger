@@ -2,7 +2,6 @@
 
 Panel interno y API para una hamburguesería. Nombre y logo provisorios.
 
-Derivado de [Pepe’s Napoletana](https://github.com/DamborianaIvan/pepes-napoli), `main` en `b277de75632006d15fb8758c3d5ab35231748188`, con el PR #25 integrado. Este repositorio tiene identidad, configuración y datos independientes. No se importaron el historial Git, secretos ni datos de producción.
 
 ## Alcance de esta primera etapa
 
