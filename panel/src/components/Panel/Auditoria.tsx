@@ -83,11 +83,6 @@ const ETIQUETAS_ACCION: Record<string, string> = {
 };
 
 const ETIQUETAS_CAMPO: Record<string, string> = {
-  comercio: "Comercio",
-  variedad: "Variedad",
-  activa: "Activa",
-  proximoSeguimiento: "Próximo seguimiento",
-  nota: "Resultado del contacto",
   estadoPedido: "Estado del pedido",
   estadoPago: "Estado de pago",
   tipoPedido: "Tipo de pedido",

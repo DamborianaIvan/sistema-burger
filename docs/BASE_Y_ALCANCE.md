@@ -31,7 +31,7 @@ Las pruebas generales mantienen la regresión del sistema conservado, incluido s
 
 ## Pendientes de decisión
 
-Menú definitivo, precios, recetas, variantes, extras por unidad, combos configurables, producción de medallones/preparaciones, venta a comercios y política de stock. No se agregaron funcionalidades para resolver estas decisiones sin definirlas.
+Menú definitivo, precios, recetas, variantes, extras por unidad, combos configurables, producción de medallones/preparaciones y política de stock. No se agregaron funcionalidades para resolver estas decisiones sin definirlas.
 
 ## Protecciones conservadas
 
