@@ -10,7 +10,6 @@ import MovimientoCaja from '../../models/MovimientoCaja.js';
 import Ingrediente from '../../models/Ingrediente.js';
 import Receta from '../../models/Receta.js';
 import MovimientoStock from '../../models/MovimientoStock.js';
-import { VariedadPrepizza, ComercioPrepizza, PedidoPrepizza, MovimientoPrepizza } from '../../models/Prepizza.js';
 import AuditLog from '../../models/AuditLog.js';
 import IntentoAcceso from '../../models/IntentoAcceso.js';
 import Bootstrap from '../../models/Bootstrap.js';
@@ -98,7 +97,6 @@ export const authorization = (token) => ({
 
 export const limpiarPedidos = async () => {
   await Promise.all([
-    VariedadPrepizza.deleteMany({}), ComercioPrepizza.deleteMany({}), PedidoPrepizza.deleteMany({}), MovimientoPrepizza.deleteMany({}),
     Pedido.deleteMany({}),
     Producto.deleteMany({}),
     Mesa.deleteMany({}),

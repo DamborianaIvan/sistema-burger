@@ -2,18 +2,16 @@ import test, { after, before, beforeEach, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import Ingrediente from '../../models/Ingrediente.js';
 import MovimientoStock from '../../models/MovimientoStock.js';
-import { PedidoPrepizza, VariedadPrepizza } from '../../models/Prepizza.js';
 
 // Perfil de negocio real, independiente del perfil amplio de regresión.
 process.env.ORDER_TYPES = 'DELIVERY,TAKEAWAY';
-process.env.ENABLE_PREPIZZAS = 'false';
 const {
   INTEGRATION_ENABLED, authorization, conectarBaseDePrueba, crearUsuario,
   desconectarBaseDePrueba, detenerServidorDePrueba, iniciarServidorDePrueba,
   limpiarPedidos, limpiarUsuarios, loginComo, requestJson
 } = await import('./testSetup.js');
 
-describe('integración: perfil hamburguesería sin circuito mayorista', { skip: !INTEGRATION_ENABLED }, () => {
+describe('integración: perfil hamburguesería', { skip: !INTEGRATION_ENABLED }, () => {
   const sesiones = {};
   before(async () => { await conectarBaseDePrueba(); await iniciarServidorDePrueba(); });
   beforeEach(async () => {
@@ -39,16 +37,11 @@ describe('integración: perfil hamburguesería sin circuito mayorista', { skip: 
     return r.body;
   };
 
-  test('login informa módulos deshabilitados y ninguna solicitud puede reactivar Prepizzas', async () => {
-    for (const rol of Object.keys(sesiones)) {
-      assert.deepEqual(sesiones[rol].orderTypes, ['DELIVERY', 'TAKEAWAY']);
-      assert.deepEqual(sesiones[rol].features, { prepizzas: false });
-      assert.equal((await api('/api/prepizzas/resumen', rol)).status, 404);
-      assert.equal((await api('/api/prepizzas/variedades', rol, 'POST', {
-        nombre: 'No debe crearse', precio: 100, features: { prepizzas: true }
-      })).status, 404);
+  test('login expone solamente sesión y modalidades de atención', () => {
+    for (const sesion of Object.values(sesiones)) {
+      assert.deepEqual(sesion.orderTypes, ['DELIVERY', 'TAKEAWAY']);
+      assert.deepEqual(Object.keys(sesion).sort(), ['id', 'nombre', 'orderTypes', 'rol', 'token']);
     }
-    assert.equal(await VariedadPrepizza.countDocuments(), 0);
   });
 
   test('delivery y takeaway conservan cocina, cobro, tickets, recetas, cierre único y reportes', async () => {
@@ -100,24 +93,15 @@ describe('integración: perfil hamburguesería sin circuito mayorista', { skip: 
     assert.equal((await Ingrediente.findById(medallon._id)).stockActual, 4);
     assert.equal(await MovimientoStock.countDocuments({ tipo: 'CONSUMO' }), 4);
 
-    // Simula un historial elaborado existente: no se borra ni se mezcla con las ventas.
-    await PedidoPrepizza.create({
-      claveOperacion: 'historial-conservado', comercioId: producto._id, comercioNombre: 'Comercio histórico',
-      items: [{ variedadId: producto._id, nombre: 'Elaborado histórico', cantidad: 1, precioUnitario: 9000, subtotal: 9000 }],
-      total: 9000, estado: 'ENTREGADO', fechaEntrega: new Date(), usuarioId: sesiones.ADMIN.id
-    });
     const cierre = await ok('/api/caja/cerrar', 'CAJERO', 'POST', { efectivoDeclarado: 9500 });
     assert.equal(cierre.diferencia, 0);
     const hoy = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Argentina/Buenos_Aires', year: 'numeric', month: '2-digit', day: '2-digit'
     }).format(new Date());
     const reporte = await ok(`/api/reportes/resumen?desde=${hoy}&hasta=${hoy}`, 'CAJERO', 'GET');
-    assert.equal(reporte.prepizzas, null);
+    assert.deepEqual(Object.keys(reporte).sort(), ['caja', 'periodo', 'stock', 'ventas']);
     assert.equal(reporte.ventas.cantidad, 2);
     assert.equal(reporte.ventas.ingresos, 25500);
-    assert.equal(reporte.resumenGeneral.ventas, 25500);
-    assert.equal(reporte.resumenGeneral.deudaPrepizzas, 0);
-    assert.equal(await PedidoPrepizza.countDocuments(), 1);
 
     for (const rol of ['CHEF', 'DELIVERY']) {
       for (const ruta of ['/api/pedidos', '/api/caja/actual', '/api/stock/ingredientes', '/api/reportes/resumen', '/api/auditoria']) {

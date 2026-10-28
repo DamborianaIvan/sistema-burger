@@ -11,14 +11,12 @@ export interface Session {
   rol: Rol;
   user: SessionUser;
   orderTypes?: TipoPedido[];
-  features?: { prepizzas: boolean };
 }
 
 const TOKEN_KEY = "token";
 const ROLE_KEY = "rol";
 const USER_KEY = "user";
 const ORDER_TYPES_KEY = "orderTypes";
-const FEATURES_KEY = "features";
 
 export const getSession = (): Session | null => {
   const token = localStorage.getItem(TOKEN_KEY);
@@ -38,10 +36,8 @@ export const getSession = (): Session | null => {
     const orderTypes = Array.isArray(rawTypes)
       ? TIPOS_PEDIDO.filter(tipo => rawTypes.includes(tipo))
       : [];
-    const rawFeatures = JSON.parse(localStorage.getItem(FEATURES_KEY) ?? 'null') as { prepizzas?: unknown } | null;
     return { token, rol: rolValue, user: { id: user.id, nombre: user.nombre },
-      orderTypes: orderTypes.length ? orderTypes : ['DELIVERY', 'TAKEAWAY'],
-      features: { prepizzas: rawFeatures?.prepizzas === true } };
+      orderTypes: orderTypes.length ? orderTypes : ['DELIVERY', 'TAKEAWAY'] };
   } catch {
     return null;
   }
@@ -52,7 +48,6 @@ export const saveSession = (session: Session): void => {
   localStorage.setItem(ROLE_KEY, session.rol);
   localStorage.setItem(USER_KEY, JSON.stringify(session.user));
   localStorage.setItem(ORDER_TYPES_KEY, JSON.stringify(session.orderTypes ?? ['DELIVERY', 'TAKEAWAY']));
-  localStorage.setItem(FEATURES_KEY, JSON.stringify({ prepizzas: session.features?.prepizzas === true }));
 };
 
 export const clearSession = (): void => {
@@ -60,7 +55,6 @@ export const clearSession = (): void => {
   localStorage.removeItem(ROLE_KEY);
   localStorage.removeItem(USER_KEY);
   localStorage.removeItem(ORDER_TYPES_KEY);
-  localStorage.removeItem(FEATURES_KEY);
 };
 
 export const logoutSession = async (): Promise<void> => {

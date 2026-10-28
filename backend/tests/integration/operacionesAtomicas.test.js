@@ -7,9 +7,7 @@ import Mesa from '../../models/Mesa.js';
 import Receta from '../../models/Receta.js';
 import Caja from '../../models/Caja.js';
 import MovimientoCaja from '../../models/MovimientoCaja.js';
-import { VariedadPrepizza } from '../../models/Prepizza.js';
 import { registrarMovimientoManual } from '../../services/stockService.js';
-import { moverStockPrepizza } from '../../services/prepizzasService.js';
 import { cerrarPedidoOperativo, cancelarPedidoOperativo } from '../../services/operacionesPedidoService.js';
 import {
   INTEGRATION_ENABLED, conectarBaseDePrueba, crearProducto, crearUsuario, crearMesa,
@@ -168,14 +166,6 @@ describe('integración: transacciones de stock y operación del salón', { skip:
     assert.equal(resultado.movimiento.motivo, '');
   });
 
-  test('la producción de prepizzas y los movimientos manuales comparten el stock sin pisarse', async () => {
-    const variedad = await VariedadPrepizza.create({ nombre: 'Clásica', precio: 1000, componentes: [{ ingredienteId: harina._id, cantidad: 0.3 }] });
-    await Promise.all([manual(), moverStockPrepizza({
-      claveOperacion: 'produccion-mixta', variedadId: variedad._id,
-      tipo: 'PRODUCCION', cantidad: 2, consumirIngredientes: true
-    }, usuario._id)]);
-    assert.equal((await Ingrediente.findById(harina._id)).stockActual, 11.4);
-  });
 
   test('un fallo al liberar la mesa revierte también la cancelación', async () => {
     const mesa = await crearMesa({ estado: 'OCUPADA' });

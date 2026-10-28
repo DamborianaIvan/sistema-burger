@@ -4,7 +4,6 @@ import Pedido from '../../models/Pedido.js';
 import Caja from '../../models/Caja.js';
 import MovimientoCaja from '../../models/MovimientoCaja.js';
 import { cobrarPedido, anularCobroPedido } from '../../services/cobrosService.js';
-import { ComercioPrepizza, VariedadPrepizza, PedidoPrepizza } from '../../models/Prepizza.js';
 import {
   INTEGRATION_ENABLED, conectarBaseDePrueba, crearUsuario, crearProducto,
   desconectarBaseDePrueba, detenerServidorDePrueba, iniciarServidorDePrueba,
@@ -107,22 +106,6 @@ describe('integración: cobros tradicionales atómicos', { skip: !INTEGRATION_EN
     assert.equal(await MovimientoCaja.countDocuments({ pedidoId: pedido._id, tipo: 'PAGO' }), pago.response.status === 200 ? 1 : 0);
   });
 
-  test('un cobro tradicional y una cuota de prepizzas suman sobre la misma caja', async () => {
-    const pedido = await crearPedido();
-    const comercio = await ComercioPrepizza.create({ nombre: 'Comercio' });
-    const variedad = await VariedadPrepizza.create({ nombre: 'Clásica', precio: 500 });
-    const prepizza = await PedidoPrepizza.create({
-      claveOperacion: 'pedido-mixto', comercioId: comercio._id, comercioNombre: comercio.nombre,
-      items: [{ variedadId: variedad._id, nombre: variedad.nombre, cantidad: 1, precioUnitario: 500, subtotal: 500 }],
-      total: 500, usuarioId: usuario._id
-    });
-    const resultados = await Promise.all([
-      cobrar(pedido._id), post(`/api/prepizzas/pedidos/${prepizza._id}/cobros`, {
-        claveOperacion: 'cuota-mixta', metodo: 'EFECTIVO', monto: 500
-      })
-    ]);
-    assert.ok(resultados.every((r) => r.response.status === 200));
-    assert.equal((await Caja.findOne({ estado: 'ABIERTA' })).totalesPorMetodo.EFECTIVO, 1500);
-  });
+
 });
 

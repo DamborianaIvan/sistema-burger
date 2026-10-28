@@ -3,7 +3,7 @@
 ## Despliegue
 
 - Usar MongoDB Atlas o un replica set: el alta inicial, los cobros tradicionales,
-  las anulaciones y prepizzas necesitan transacciones. No se usa una alternativa
+  las anulaciones y los movimientos de stock necesitan transacciones. No se usa una alternativa
   sin transacciones cuando la base no las soporta.
 - En Render configurar `TRUST_PROXY=1` si hay exactamente un proxy entre Internet
   y Express. Para ejecutar la API directamente usar `TRUST_PROXY=0` (valor por
@@ -46,8 +46,7 @@ transacción. Las anulaciones usan el mismo mecanismo y solo descuentan dinero
 de la caja abierta que recibió el pago. Un fallo revierte todas esas escrituras.
 
 Los cobros concurrentes del mismo pedido se serializan: uno se confirma y los
-restantes reciben HTTP 409. Los cobros de pedidos diferentes y las cuotas de
-prepizzas usan incrementos atómicos sobre la misma caja. El cierre de caja
+restantes reciben HTTP 409. Los cobros de pedidos diferentes usan incrementos atómicos sobre la misma caja. El cierre de caja
 comprueba que sigue abierta y que sus totales no cambiaron desde la lectura.
 Los pedidos usan control optimista de versión para impedir que una edición o
 cancelación basada en datos anteriores sobrescriba un cobro reciente.
@@ -96,11 +95,10 @@ conceder acceso a los datos. El alta inicial sigue cerrada después del primer A
 
 ### Fase 2: auditoría crítica — implementada
 
-Cobros y anulaciones del restaurante, descuentos, cuotas de prepizzas, apertura y
+Cobros y anulaciones, descuentos, apertura y
 cierre de caja y altas/cambios de usuarios escriben su auditoría dentro de la
 misma transacción. Si falla el evento, la operación completa se revierte y se
-responde HTTP 503. Los reintentos idempotentes de un cobro de prepizzas no crean
-eventos repetidos. No se guardan contraseñas ni tokens en los detalles.
+responde HTTP 503. No se guardan contraseñas ni tokens en los detalles.
 
 La colección `ControlOperacion` serializa los cambios de personal y vuelve a
 comprobar los permisos del administrador dentro de la transacción. Evita que dos
@@ -110,13 +108,13 @@ esta colección durante la operación normal.
 La auditoría de otras acciones (por ejemplo cambios operativos de estado,
 catálogo y ajustes de stock) conserva el comportamiento de mejor esfuerzo.
 Hacerla obligatoria también es una mejora futura, sin tratarla como un requisito
-para el uso actual de esta pizzería. Los datos de negocio y sus movimientos de
+para el uso actual de esta hamburguesería. Los datos de negocio y sus movimientos de
 stock/mesa sí se mantienen transaccionales según las fases anteriores.
 
 ### Fase 3: consultas y crecimiento del historial — implementada
 
-Los listados de pedidos, cocina, reparto, auditoría y movimientos de caja/stock,
-y los pedidos del resumen de prepizzas aceptan `page` y `limit` (1–200).
+Los listados de pedidos, cocina, reparto, auditoría y movimientos de caja/stock
+aceptan `page` y `limit` (1–200).
 Devuelven `X-Total-Count`, `X-Page`, `X-Limit` y `X-Has-More`, expuestos en CORS.
 Se conservan las respuestas de tipo array salvo los resúmenes, que mantienen sus
 objetos. Los clientes que antes asumían un historial completo deben paginar.
@@ -136,11 +134,7 @@ superan 200, muestra un error para evitar presentar un plano incompleto.
 
 `GET /api/pedidos/resumen` agrega los indicadores del inicio en el servidor con
 el día y mes de Argentina. La página de pedidos de hoy no condiciona los
-conteos. Prepizzas admite `comercioId` y `estado` (incluido DEUDA); sus saldos se
-agregan sobre todos los pedidos no cancelados, sin depender del filtro o página.
-Los maestros pequeños (mesas, productos, variedades, comercios) siguen completos;
-el resumen de prepizzas conserva los últimos 200 movimientos y los contactos
-embebidos. Paginar estos últimos queda como mejora si el volumen lo requiere.
+conteos. Los maestros pequeños (mesas y productos) siguen completos.
 
 ### Fase 4: producción y recuperación — pendiente de evidencia privada
 
@@ -166,7 +160,7 @@ Ejecutar `npm ci` y `npm test` en `backend`, con `JWT_SECRET` y
 La suite elimina datos de esa base. Incluye errores de parser, inyección de
 operadores en login, límites por IP/cuenta, bootstrap concurrente, revocación de
 sesiones, cobros y anulaciones simultáneos, fallo intermedio con rollback,
-competencia con el cierre de caja y cobros mezclados con prepizzas.
+competencia con el cierre de caja y consumo único de ingredientes.
 
 En `panel`, ejecutar `npm ci`, `npm run build` y `npm run lint`.
 

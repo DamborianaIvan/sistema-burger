@@ -16,7 +16,7 @@ const obtenerPedido = async (id, session) => {
 };
 
 // Escribir sobre la caja en la transacción serializa cobros, anulaciones,
-// cuotas de prepizzas y el cierre, que también comprueba estado y totales.
+// y el cierre, que también comprueba estado y totales.
 const moverCaja = async (pagos, signo, session, cajaId = null) => {
   const incrementos = {};
   const filtro = { estado: ESTADOS_CAJA.ABIERTA };

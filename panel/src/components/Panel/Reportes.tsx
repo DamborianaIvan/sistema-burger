@@ -49,7 +49,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const TIME_ZONE = "America/Argentina/Buenos_Aires";
 
 type Preset = "HOY" | "7_DIAS" | "MES" | "PERSONALIZADO";
-type TabReporte = "ventas" | "caja" | "stock" | "prepizzas";
+type TabReporte = "ventas" | "caja" | "stock";
 
 const fechaArgentina = () => {
   const partes = new Intl.DateTimeFormat("en-US", {
@@ -113,7 +113,6 @@ const Reportes = () => {
   const [data, setData] = useState<ResumenReportes | null>(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const reportePrepizzas = session?.features?.prepizzas ? data?.prepizzas : null;
   const tiposVisibles = TIPOS_PEDIDO.filter(tipo =>
     session?.orderTypes?.includes(tipo) || (data?.ventas.porTipo[tipo]?.cantidad ?? 0) > 0
   );
@@ -268,8 +267,8 @@ const Reportes = () => {
               <Card>
                 <CardContent>
                   <span>Ventas totales</span>
-                  <strong>{moneda(data.resumenGeneral.ventas)}</strong>
-                  <small>{reportePrepizzas ? "Restaurante + prepizzas entregadas" : "Pedidos cobrados y cerrados"}</small>
+                  <strong>{moneda(data.ventas.ingresos)}</strong>
+                  <small>Pedidos cobrados y cerrados</small>
                 </CardContent>
               </Card>
 
@@ -309,25 +308,7 @@ const Reportes = () => {
             <Tab value="ventas" icon={<TrendingUpIcon />} iconPosition="start" label="Ventas" />
             <Tab value="caja" icon={<PointOfSaleIcon />} iconPosition="start" label="Caja" />
             <Tab value="stock" icon={<Inventory2OutlinedIcon />} iconPosition="start" label="Stock" />
-            {reportePrepizzas && <Tab value="prepizzas" label="Prepizzas" />}
           </Tabs>
-
-          {tab === "prepizzas" && reportePrepizzas && (
-            <Stack spacing={2}>
-              <Alert severity="info">Ventas por fecha de entrega y cobros por fecha de pago. El saldo incluye los pedidos pendientes registrados hasta el final del período, aunque todavía no se hayan entregado.</Alert>
-              <Box className="reportes-kpis">
-                <Card><CardContent><span>Prepizzas vendidas</span><strong>{moneda(reportePrepizzas.vendido)}</strong><small>{reportePrepizzas.unidadesEntregadas} unidades entregadas</small></CardContent></Card>
-                <Card><CardContent><span>Cobrado en el período</span><strong>{moneda(reportePrepizzas.cobrado)}</strong><small>Incluye cobros de pedidos anteriores y anticipos</small></CardContent></Card>
-                <Card><CardContent><span>Saldo al cierre del período</span><strong>{moneda(reportePrepizzas.pendiente)}</strong><small>Importes pendientes de los comercios</small></CardContent></Card>
-                <Card><CardContent><span>Producción</span><strong>{reportePrepizzas.producido}</strong><small>{reportePrepizzas.bajas} bajas registradas</small></CardContent></Card>
-              </Box>
-              <Card><CardContent><Typography variant="h6" mb={2}>Detalle por comercio</Typography>
-                <div className="reportes-table-wrap"><table className="reportes-table"><thead><tr><th>Comercio</th><th>Unidades entregadas</th><th>Vendido</th><th>Cobrado</th><th>Saldo al cierre</th></tr></thead><tbody>{reportePrepizzas.porComercio.map(c => <tr key={c.comercioId}><td>{c.nombre}</td><td>{c.unidades}</td><td>{moneda(c.vendido)}</td><td>{moneda(c.cobrado)}</td><td>{moneda(c.pendiente)}</td></tr>)}</tbody></table></div>
-                {!reportePrepizzas.porComercio.length && <Typography color="text.secondary">Sin operaciones registradas.</Typography>}
-              </CardContent></Card>
-              <Card><CardContent><Typography variant="h6">Cobros por método de pago</Typography>{Object.entries(reportePrepizzas.porMetodoPago).map(([metodo, monto]) => <Typography key={metodo}>{ETIQUETAS_METODO_PAGO[metodo as MetodoPago]}: {moneda(monto)}</Typography>)}<Typography variant="body2" color="text.secondary" mt={1}>El consumo de ingredientes por producción también está incluido en la pestaña Stock.</Typography></CardContent></Card>
-            </Stack>
-          )}
 
           {tab === "ventas" && (
             <Stack spacing={2}>

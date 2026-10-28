@@ -95,7 +95,7 @@ router.post('/cerrar', protect, requirePermission(PERMISSIONS.CASH_CLOSE), async
     const declarado = redondearMoneda(efectivoDeclarado);
 
     // El cierre solo aplica si no ingresó ningún cobro desde la lectura inicial.
-    // Evita cerrar con totales anteriores a una cuota de prepizzas concurrente.
+    // Evita cerrar con totales anteriores a un cobro concurrente.
     const filtroCierre = { _id: caja._id, estado: ESTADOS_CAJA.ABIERTA };
     for (const metodo of Object.values(METODOS_PAGO)) {
       filtroCierre[`totalesPorMetodo.${metodo}`] = caja.totalesPorMetodo[metodo];

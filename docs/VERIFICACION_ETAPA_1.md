@@ -1,13 +1,13 @@
 # Verificación de la primera etapa
 
-Fecha: 28 de octubre de 2026.
+Fecha: 28 de octubre de 2026. Evidencia histórica de la primera entrega; para la verificación actual ver `PRUEBAS_HAMBURGUESERIA.md`.
 
 Base: `pepes-napoli` en `b277de75632006d15fb8758c3d5ab35231748188`.
 
 ## Resultados
 
 - Instalación de ambas aplicaciones con `npm ci` usando sus lockfiles.
-- Backend: **202 pruebas aprobadas**, cero fallos y cero omitidas, con MongoDB 7.0.14 en un replica set temporal exclusivo. Incluye las integraciones heredadas de salón, delivery, takeaway, caja, stock, prepizzas, permisos, sesiones, privacidad y auditoría.
+- Backend: **202 pruebas aprobadas**, cero fallos y cero omitidas, con MongoDB 7.0.14 en un replica set temporal exclusivo. Incluye las integraciones heredadas de salón, delivery, takeaway, caja, stock, permisos, sesiones, privacidad y auditoría.
 - Prueba HTTP adicional: ADMIN/CAJERO no pueden crear un pedido de salón en el perfil delivery/takeaway. Una solicitud anónima recibe 401; CHEF/DELIVERY reciben 403 al intentar crear pedidos.
 - Panel: `npm run build` y `npm run lint` aprobados. Build conserva un aviso por tamaño del bundle, que no impide compilar.
 - `npm audit --omit=dev --audit-level=high` en backend y `npm audit --audit-level=high` en panel: cero vulnerabilidades informadas en esta ejecución.
@@ -20,4 +20,4 @@ Base: `pepes-napoli` en `b277de75632006d15fb8758c3d5ab35231748188`.
 
 No se verificó Docker Compose en este entorno: la suite se ejecutó con un replica set temporal. La configuración de Compose se entrega para facilitar las pruebas locales del usuario. No se configuró ni probó un despliegue en Render/Vercel, una base de producción ni backups del negocio.
 
-Prepizzas sigue como circuito heredado pendiente de decisión. No se implementaron menú definitivo, producción de medallones, modificadores por unidad ni combos configurables.
+No se implementaron menú definitivo, producción de medallones, modificadores por unidad ni combos configurables.

@@ -4,7 +4,6 @@ import Pedido from '../../models/Pedido.js';
 import Caja from '../../models/Caja.js';
 import MovimientoCaja from '../../models/MovimientoCaja.js';
 import AuditLog from '../../models/AuditLog.js';
-import { ComercioPrepizza, PedidoPrepizza } from '../../models/Prepizza.js';
 import {
   INTEGRATION_ENABLED, conectarBaseDePrueba, desconectarBaseDePrueba,
   iniciarServidorDePrueba, detenerServidorDePrueba, limpiarPedidos, limpiarUsuarios,
@@ -28,7 +27,7 @@ describe('integración: consultas acotadas con totales completos', { skip: !INTE
   })));
 
   test('rechaza paginación y filtros malformados en lugar de ampliar la consulta', async () => {
-    for (const ruta of ['/api/pedidos', '/api/pedidos/cocina', '/api/pedidos/resumen', '/api/prepizzas/resumen', '/api/auditoria']) {
+    for (const ruta of ['/api/pedidos', '/api/pedidos/cocina', '/api/pedidos/resumen', '/api/auditoria']) {
       for (const q of ['limit=0', 'limit=201', 'page=-1', 'page=1.5', 'limit[$gt]=0', 'page=2&page=3', 'page=9999&limit=200']) {
         const { response } = await consultar(`${ruta}?${q}`);
         assert.equal(response.status, 400, `${ruta}?${q}`);
@@ -90,21 +89,6 @@ describe('integración: consultas acotadas con totales completos', { skip: !INTE
     assert.equal((await consultar('/api/pedidos/resumen', chef)).response.status, 403);
   });
 
-  test('los saldos incluyen pedidos fuera de página y de los filtros', async () => {
-    const comercio = await ComercioPrepizza.create({ nombre: 'Comercio', usuarioId: usuario._id });
-    await PedidoPrepizza.create([
-      { claveOperacion: 'paginacion-uno', comercioId: comercio._id, comercioNombre: 'Comercio', items: [], total: 100, cobrado: 20, usuarioId: usuario._id },
-      { claveOperacion: 'paginacion-dos', comercioId: comercio._id, comercioNombre: 'Comercio', items: [], total: 40, cobrado: 0, estado: 'ENTREGADO', usuarioId: usuario._id },
-      { claveOperacion: 'paginacion-tres', comercioId: comercio._id, comercioNombre: 'Comercio', items: [], total: 500, cobrado: 0, estado: 'CANCELADO', usuarioId: usuario._id }
-    ]);
-    const { body, response } = await consultar('/api/prepizzas/resumen?limit=1&estado=DEUDA');
-    assert.equal(body.pedidos.length, 1);
-    assert.equal(response.headers.get('x-total-count'), '2');
-    assert.equal(body.comercios[0].saldo, 120);
-    const filtrado = await consultar(`/api/prepizzas/resumen?limit=1&estado=PENDIENTE&comercioId=${comercio._id}`);
-    assert.equal(filtrado.body.comercios[0].saldo, 120);
-    assert.equal(filtrado.response.headers.get('x-total-count'), '1');
-  });
 
   test('movimientos de caja y stock también limitan y publican la paginación para el panel', async () => {
     const caja = await Caja.create({ montoInicial: 0, abiertaPor: usuario._id });

@@ -12,7 +12,6 @@ import ProductoManager from "./components/Panel/ProductoManager";
 import UsuarioManager from "./components/Panel/UsuarioManager";
 import Cocina from "./components/Panel/Cocina";
 import Caja from "./components/Panel/Caja";
-import Prepizzas from "./components/Panel/Prepizzas";
 import StockManager from "./components/Panel/StockManager";
 import Auditoria from "./components/Panel/Auditoria";
 import DeliveryPedidos from "./components/Panel/DeliveryPedidos";
@@ -47,7 +46,6 @@ export default function App() {
           <Route path="pedidos" element={<RoleRoute><ListaPedidos /></RoleRoute>} />
           <Route path="cocina" element={<RoleRoute kitchen><Cocina /></RoleRoute>} />
           <Route path="caja" element={<RoleRoute><Caja /></RoleRoute>} />
-          <Route path="prepizzas" element={<RoleRoute prepizzasOnly><Prepizzas /></RoleRoute>} />
           <Route path="stock" element={<RoleRoute><StockManager /></RoleRoute>} />
           <Route path="reportes" element={<RoleRoute><Reportes /></RoleRoute>} />
           <Route path="crear-producto" element={<RoleRoute><ProductoManager /></RoleRoute>} />

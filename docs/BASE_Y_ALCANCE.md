@@ -20,11 +20,14 @@ Modalidades configuradas por `ORDER_TYPES`; validación en el servicio de creaci
 
 ## Segunda etapa
 
-El circuito de prepizzas queda deshabilitado por defecto mediante `ENABLE_PREPIZZAS=false`. No se monta su API, no aparece en navegación ni en reportes de ventas y su URL del panel redirige al inicio. Los reportes de ventas excluyen las operaciones mayoristas y devuelven `prepizzas: null`. Se conservan los modelos, código, historial y permisos originales para poder revisar producción en otra etapa. Caja, stock y auditoría conservan los movimientos históricos; su desactivación no revierte operaciones.
+La aplicación conserva únicamente los módulos aplicables al negocio. Se retiró el circuito mayorista heredado, sus modelos, rutas, servicios, pantallas, tipos, permisos, eventos de auditoría y agregaciones de ventas. No hay una opción para reactivarlo. Stock, ingredientes y recetas generales permanecen activos.
+
+No se ejecutan migraciones ni borrados sobre la base existente. Los movimientos contables y el historial de auditoría ya persistidos se conservan.
 
 Los puertos iniciales se separan: API 5001 y panel 5174 estricto, con orígenes locales explícitos. El arranque informa puerto, PID y orígenes efectivos, sin secretos. Si el puerto está ocupado, falla y cierra la conexión MongoDB en vez de anunciar una API iniciada.
 
-Las pruebas generales conservan el perfil completo mediante `test.env`, mientras una suite de negocio ejecuta delivery/takeaway con Prepizzas deshabilitado. No se cambian recetas, stock ni credenciales del usuario.
+
+Las pruebas generales mantienen la regresión del sistema conservado, incluido salón. La suite de negocio verifica delivery/takeaway de punta a punta.
 
 ## Pendientes de decisión
 

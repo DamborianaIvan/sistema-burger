@@ -7,10 +7,9 @@ interface RoleRouteProps {
   deliveryOnly?: boolean;
   kitchen?: boolean;
   salonOnly?: boolean;
-  prepizzasOnly?: boolean;
 }
 
-export const RoleRoute = ({ children, deliveryOnly = false, kitchen = false, salonOnly = false, prepizzasOnly = false }: RoleRouteProps) => {
+export const RoleRoute = ({ children, deliveryOnly = false, kitchen = false, salonOnly = false }: RoleRouteProps) => {
   const session = getSession();
   const isChef = session?.rol === "CHEF";
   if (isChef && !kitchen) return <Navigate to="/panel/cocina" replace />;
@@ -26,10 +25,6 @@ export const RoleRoute = ({ children, deliveryOnly = false, kitchen = false, sal
 
   if (salonOnly && !session?.orderTypes?.includes("SALON")) {
     return <Navigate to="/panel/nuevo-pedido" replace />;
-  }
-
-  if (prepizzasOnly && !session?.features?.prepizzas) {
-    return <Navigate to="/panel/dashboard" replace />;
   }
 
   return children;

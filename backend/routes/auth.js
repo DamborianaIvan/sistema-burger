@@ -89,8 +89,7 @@ router.post('/login', limitarLoginIp, validarLogin, limitarLoginCuenta, async (r
       rol: usuario.rol,
       nombre: usuario.nombre,
       id: usuario._id,
-      orderTypes: config.orderTypes,
-      features: { prepizzas: config.prepizzasEnabled }
+      orderTypes: config.orderTypes
     });
   } catch (error) {
     return next(error);

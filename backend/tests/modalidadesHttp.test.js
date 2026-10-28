@@ -8,7 +8,6 @@ import SesionRevocada from '../models/SesionRevocada.js';
 // Este proceso prueba el perfil real de la hamburguesería; la regresión general
 // usa test.env para seguir cubriendo el salón conservado.
 process.env.ORDER_TYPES = 'DELIVERY,TAKEAWAY';
-process.env.ENABLE_PREPIZZAS = 'false';
 process.env.CORS_ORIGINS = 'http://localhost:5174';
 process.env.JWT_SECRET = 'synthetic-test-secret-for-burger-order-modes';
 const { default: app } = await import('../server.js');
@@ -56,14 +55,6 @@ test('la configuración comercial no evita autenticación ni permisos', async ()
     rol = perfil;
     assert.equal((await crear()).status, 403);
   }
-});
-
-test('el circuito deshabilitado no está disponible aunque se invoque directamente', async () => {
-  assert.equal((await fetch(`${base}/api/prepizzas/resumen`)).status, 404);
-  assert.equal((await fetch(`${base}/api/prepizzas/variedades`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nombre: 'No permitido', precio: 100 })
-  })).status, 404);
 });
 
 test('preflight autoriza el origen configurado y no abre CORS para otros puertos', async () => {

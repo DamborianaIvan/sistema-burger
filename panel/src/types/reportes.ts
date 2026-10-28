@@ -1,4 +1,3 @@
-import type { ReportePrepizzas } from "./prepizzas";
 import type { MetodoPago, TipoPedido } from "./pedido";
 
 export interface ReporteProducto {
@@ -50,8 +49,6 @@ export interface ReporteAlertaStock {
 }
 
 export interface ResumenReportes {
-  prepizzas: ReportePrepizzas | null;
-  resumenGeneral: { ventas: number; cobrosPrepizzas: number; deudaPrepizzas: number };
   periodo: {
     desde: string;
     hasta: string;
