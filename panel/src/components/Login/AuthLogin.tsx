@@ -51,7 +51,8 @@ export const AuthLogin = () => {
         setSnackbarType("error"); setSnackbarMsg("Respuesta de autenticación inválida."); setSnackbarOpen(true); return;
       }
       saveSession({
-        orderTypes: data.orderTypes, token: data.token, rol: data.rol, user: { nombre: data.nombre, id: data.id } });
+        orderTypes: data.orderTypes,
+        token: data.token, rol: data.rol, user: { nombre: data.nombre, id: data.id } });
       setSnackbarType("success"); setSnackbarMsg("Inicio de sesión exitoso."); setSnackbarOpen(true);
       const destino = data.rol === "DELIVERY" ? "/panel/delivery" : data.rol === "CHEF" ? "/panel/cocina" : "/panel/dashboard";
       setTimeout(() => navigate(destino), 1000);

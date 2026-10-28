@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { parseOrderTypes } from './utils/modalidades.js';
 
-const DEFAULT_PORT = 5000;
-const DEFAULT_BASE_URL = 'http://localhost:5000';
+const DEFAULT_PORT = 5001;
+const DEFAULT_BASE_URL = 'http://localhost:5001';
 const DEFAULT_JWT_EXPIRES_IN = '1d';
 
 const parsePort = (value) => {
@@ -11,7 +11,7 @@ const parsePort = (value) => {
 };
 
 const parseCorsOrigins = (value) => {
-  if (!value) return ['http://localhost:5173'];
+  if (!value) return ['http://localhost:5174', 'http://127.0.0.1:5174'];
 
   return value
     .split(',')

@@ -49,7 +49,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const TIME_ZONE = "America/Argentina/Buenos_Aires";
 
 type Preset = "HOY" | "7_DIAS" | "MES" | "PERSONALIZADO";
-type TabReporte = "ventas" | "caja" | "stock" | "prepizzas";
+type TabReporte = "ventas" | "caja" | "stock";
 
 const fechaArgentina = () => {
   const partes = new Intl.DateTimeFormat("en-US", {
@@ -104,6 +104,7 @@ const etiquetaCategoria = (categoria: string) =>
 
 const Reportes = () => {
   const inicial = resolverPreset("MES");
+  const session = getSession();
 
   const [preset, setPreset] = useState<Preset>("MES");
   const [desde, setDesde] = useState(inicial.desde);
@@ -112,6 +113,9 @@ const Reportes = () => {
   const [data, setData] = useState<ResumenReportes | null>(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const tiposVisibles = TIPOS_PEDIDO.filter(tipo =>
+    session?.orderTypes?.includes(tipo) || (data?.ventas.porTipo[tipo]?.cantidad ?? 0) > 0
+  );
 
   const cargar = useCallback(async (rangoDesde = desde, rangoHasta = hasta) => {
     const token = getSession()?.token;
@@ -263,14 +267,14 @@ const Reportes = () => {
               <Card>
                 <CardContent>
                   <span>Ventas totales</span>
-                  <strong>{moneda(data.resumenGeneral.ventas)}</strong>
-                  <small>Restaurante + prepizzas entregadas</small>
+                  <strong>{moneda(data.ventas.ingresos)}</strong>
+                  <small>Pedidos cobrados y cerrados</small>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardContent>
-                  <span>Ventas del restaurante</span>
+                  <span>Pedidos vendidos</span>
                   <strong>{data.ventas.cantidad}</strong>
                   <small>Pedidos cobrados y cerrados</small>
                 </CardContent>
@@ -278,7 +282,7 @@ const Reportes = () => {
 
               <Card>
                 <CardContent>
-                  <span>Promedio del restaurante</span>
+                  <span>Promedio por pedido</span>
                   <strong>{moneda(data.ventas.ticketPromedio)}</strong>
                   <small>Importe promedio por pedido cobrado</small>
                 </CardContent>
@@ -286,7 +290,7 @@ const Reportes = () => {
 
               <Card>
                 <CardContent>
-                  <span>Unidades del restaurante</span>
+                  <span>Unidades vendidas</span>
                   <strong>{numero(data.ventas.unidadesVendidas)}</strong>
                   <small>Productos entregados en el período</small>
                 </CardContent>
@@ -304,25 +308,7 @@ const Reportes = () => {
             <Tab value="ventas" icon={<TrendingUpIcon />} iconPosition="start" label="Ventas" />
             <Tab value="caja" icon={<PointOfSaleIcon />} iconPosition="start" label="Caja" />
             <Tab value="stock" icon={<Inventory2OutlinedIcon />} iconPosition="start" label="Stock" />
-            <Tab value="prepizzas" label="Prepizzas" />
           </Tabs>
-
-          {tab === "prepizzas" && (
-            <Stack spacing={2}>
-              <Alert severity="info">Ventas por fecha de entrega y cobros por fecha de pago. El saldo incluye los pedidos pendientes registrados hasta el final del período, aunque todavía no se hayan entregado.</Alert>
-              <Box className="reportes-kpis">
-                <Card><CardContent><span>Prepizzas vendidas</span><strong>{moneda(data.prepizzas.vendido)}</strong><small>{data.prepizzas.unidadesEntregadas} unidades entregadas</small></CardContent></Card>
-                <Card><CardContent><span>Cobrado en el período</span><strong>{moneda(data.prepizzas.cobrado)}</strong><small>Incluye cobros de pedidos anteriores y anticipos</small></CardContent></Card>
-                <Card><CardContent><span>Saldo al cierre del período</span><strong>{moneda(data.prepizzas.pendiente)}</strong><small>Importes pendientes de los comercios</small></CardContent></Card>
-                <Card><CardContent><span>Producción</span><strong>{data.prepizzas.producido}</strong><small>{data.prepizzas.bajas} bajas registradas</small></CardContent></Card>
-              </Box>
-              <Card><CardContent><Typography variant="h6" mb={2}>Detalle por comercio</Typography>
-                <div className="reportes-table-wrap"><table className="reportes-table"><thead><tr><th>Comercio</th><th>Unidades entregadas</th><th>Vendido</th><th>Cobrado</th><th>Saldo al cierre</th></tr></thead><tbody>{data.prepizzas.porComercio.map(c => <tr key={c.comercioId}><td>{c.nombre}</td><td>{c.unidades}</td><td>{moneda(c.vendido)}</td><td>{moneda(c.cobrado)}</td><td>{moneda(c.pendiente)}</td></tr>)}</tbody></table></div>
-                {!data.prepizzas.porComercio.length && <Typography color="text.secondary">Sin operaciones registradas.</Typography>}
-              </CardContent></Card>
-              <Card><CardContent><Typography variant="h6">Cobros por método de pago</Typography>{Object.entries(data.prepizzas.porMetodoPago).map(([metodo, monto]) => <Typography key={metodo}>{ETIQUETAS_METODO_PAGO[metodo as MetodoPago]}: {moneda(monto)}</Typography>)}<Typography variant="body2" color="text.secondary" mt={1}>El consumo de ingredientes por producción también está incluido en la pestaña Stock.</Typography></CardContent></Card>
-            </Stack>
-          )}
 
           {tab === "ventas" && (
             <Stack spacing={2}>
@@ -389,7 +375,7 @@ const Reportes = () => {
                     </Typography>
 
                     <div className="reportes-simple-list">
-                      {TIPOS_PEDIDO.map((tipo) => (
+                      {tiposVisibles.map((tipo) => (
                         <div className="reportes-simple-row reportes-simple-row-two" key={tipo}>
                           <span>{ETIQUETAS_TIPO_PEDIDO[tipo]}</span>
                           <span>{data.ventas.porTipo[tipo]?.cantidad ?? 0} ventas</span>

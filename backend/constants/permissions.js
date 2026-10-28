@@ -8,7 +8,6 @@ export const PERMISSIONS = Object.freeze({
   CASH_OPEN: 'cash:open',
   CASH_CLOSE: 'cash:close',
   CASH_CHARGE: 'cash:charge',
-  PREPIZZAS_OPERATE: 'prepizzas:operate',
   STOCK_ADJUST: 'stock:adjust',
   PRODUCTS_MANAGE: 'products:manage',
   REPORTS_VIEW: 'reports:view',
@@ -28,7 +27,6 @@ export const PERMISSIONS_BY_ROLE = Object.freeze({
     PERMISSIONS.CASH_CLOSE,
     PERMISSIONS.CASH_CHARGE,
     PERMISSIONS.REPORTS_VIEW,
-    PERMISSIONS.PREPIZZAS_OPERATE
   ]),
   [ROLES.CHEF]: Object.freeze([
     PERMISSIONS.ORDERS_CHANGE_STATUS

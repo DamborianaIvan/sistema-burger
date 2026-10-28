@@ -5,7 +5,6 @@ import Usuario from '../../models/Usuario.js';
 import Pedido from '../../models/Pedido.js';
 import Caja from '../../models/Caja.js';
 import MovimientoCaja from '../../models/MovimientoCaja.js';
-import { PedidoPrepizza, ComercioPrepizza, VariedadPrepizza } from '../../models/Prepizza.js';
 import { registrarAuditoria } from '../../services/auditoriaService.js';
 import {
   INTEGRATION_ENABLED, conectarBaseDePrueba, desconectarBaseDePrueba,
@@ -70,19 +69,6 @@ describe('integración: auditoría obligatoria y atómica', { skip: !INTEGRATION
     assert.equal((await Pedido.findById(pedido._id)).totalFinal, 1000);
   });
 
-  test('un cobro de prepizzas se revierte y un reintento exitoso no duplica la auditoría', async () => {
-    await abrir();
-    const comercio = await ComercioPrepizza.create({ nombre: 'Comercio' });
-    const variedad = await VariedadPrepizza.create({ nombre: 'Clásica', precio: 1000 });
-    const p = await PedidoPrepizza.create({ claveOperacion: 'pedido-auditado', comercioId: comercio._id, comercioNombre: comercio.nombre,
-      items: [{ variedadId: variedad._id, nombre: variedad.nombre, cantidad: 1, precioUnitario: 1000, subtotal: 1000 }], total: 1000, usuarioId: admin.id });
-    const cobro = () => escribir(`/api/prepizzas/pedidos/${p._id}/cobros`, { claveOperacion: 'cuota-auditada', metodo: 'EFECTIVO', monto: 500 });
-    assert.equal((await conFallo(cobro)).response.status, 503);
-    assert.equal((await PedidoPrepizza.findById(p._id)).cobrado, 0);
-    await cobro(); await cobro();
-    assert.equal((await Caja.findOne()).totalesPorMetodo.EFECTIVO, 500);
-    assert.equal(await AuditLog.countDocuments({ accion: 'PREPIZZA_COBRO_REGISTRADO' }), 1);
-  });
 
   test('cambiar password con auditoría fallida no cambia contraseña ni revoca sesiones', async () => {
     const usuario = await crearUsuario({ nombreUsuario: 'cajero', email: 'cajero@test.com', rol: 'CAJERO' });

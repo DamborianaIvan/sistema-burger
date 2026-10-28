@@ -1,4 +1,3 @@
-import { generarReportePrepizzas } from './reportesPrepizzasService.js';
 import Caja from '../models/Caja.js';
 import Ingrediente from '../models/Ingrediente.js';
 import MovimientoStock from '../models/MovimientoStock.js';
@@ -212,11 +211,7 @@ export const generarResumenReportes = async ({ inicio, finExclusivo }) => {
       stockMinimo: ingrediente.stockMinimo
     }));
 
-  const prepizzas = await generarReportePrepizzas({ inicio, finExclusivo });
-
   return {
-    prepizzas,
-    resumenGeneral: { ventas: redondearMoneda(ingresos + prepizzas.vendido), cobrosPrepizzas: prepizzas.cobrado, deudaPrepizzas: prepizzas.pendiente },
     ventas: {
       cantidad: pedidos.length,
       ingresos,

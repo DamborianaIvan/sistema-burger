@@ -5,7 +5,7 @@ export const openapiDefinition = {
     version: '1.0.0',
     description: 'API para autenticación, productos, pedidos, mesas, caja, pagos, tickets, stock, reportes y auditoría.'
   },
-  servers: [{ url: process.env.BASE_URL || 'http://localhost:5000', description: 'Servidor configurado' }],
+  servers: [{ url: process.env.BASE_URL || 'http://localhost:5001', description: 'Servidor configurado' }],
   tags: [
     { name: 'Health', description: 'Estado del servicio y conexión a base de datos' },
     { name: 'Auth', description: 'Autenticación de usuarios' },

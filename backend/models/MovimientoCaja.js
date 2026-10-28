@@ -9,7 +9,6 @@ const MovimientoCajaSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  pedidoPrepizzaId: { type: mongoose.Schema.Types.ObjectId, ref: 'PedidoPrepizza', default: null, index: true },
   pedidoId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Pedido',

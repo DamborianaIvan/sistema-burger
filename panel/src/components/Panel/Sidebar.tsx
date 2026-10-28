@@ -210,11 +210,6 @@ const Sidebar = () => {
                 </NavLink>
               )}
 
-              {rol && hasPermission(rol, PERMISSIONS.PREPIZZAS_OPERATE) && (
-                <NavLink className={navClass} to="/panel/prepizzas" onClick={() => setOpen(false)}>
-                  <Inventory2Icon className="sidebar-icon" />PREPIZZAS
-                </NavLink>
-              )}
               {canAdjustStock && (
                 <NavLink
                   className={navClass}

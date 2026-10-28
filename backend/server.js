@@ -20,7 +20,6 @@ import usuariosRoutes from './routes/usuarios.js';
 import cajaRoutes from './routes/caja.js';
 import stockRoutes from './routes/stock.js';
 import reportesRoutes from './routes/reportes.js';
-import prepizzasRoutes from './routes/prepizzas.js';
 import auditoriaRoutes from './routes/auditoria.js';
 
 const swaggerDocs = { ...openapiDefinition, paths };
@@ -54,7 +53,6 @@ app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/caja', cajaRoutes);
 app.use('/api/stock', stockRoutes);
 app.use('/api/reportes', reportesRoutes);
-app.use('/api/prepizzas', prepizzasRoutes);
 app.use('/api/auditoria', auditoriaRoutes);
 app.use(notFound);
 app.use(errorHandler);
@@ -64,9 +62,21 @@ export const startServer = async () => {
   await mongoose.connect(config.mongoUri);
   console.log('MongoDB conectado');
 
-  return app.listen(config.port, () => {
-    console.log(`Servidor corriendo en puerto ${config.port}`);
-  });
+  try {
+    return await new Promise((resolve, reject) => {
+      const server = app.listen(config.port);
+      server.once('error', reject);
+      server.once('listening', () => {
+        server.off('error', reject);
+        console.log(`Sistema Burger: API en puerto ${config.port} (PID ${process.pid})`);
+        console.log(`Orígenes CORS: ${config.corsOrigins.join(', ')}`);
+        resolve(server);
+      });
+    });
+  } catch (error) {
+    await mongoose.disconnect();
+    throw error;
+  }
 };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

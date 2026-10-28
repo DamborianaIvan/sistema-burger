@@ -23,7 +23,7 @@ import "./Auditoria.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-type EntidadAuditoria = "PREPIZZA" | "PEDIDO" | "CAJA" | "STOCK" | "USUARIO" | "PRODUCTO";
+type EntidadAuditoria = "PEDIDO" | "CAJA" | "STOCK" | "USUARIO" | "PRODUCTO";
 
 interface AuditLog {
   _id: string;
@@ -44,7 +44,6 @@ interface AuditLog {
 }
 
 const ENTIDADES: Array<{ value: EntidadAuditoria; label: string }> = [
-  { value: "PREPIZZA", label: "Prepizzas" },
   { value: "PEDIDO", label: "Pedidos" },
   { value: "CAJA", label: "Caja" },
   { value: "STOCK", label: "Stock" },
@@ -53,7 +52,6 @@ const ENTIDADES: Array<{ value: EntidadAuditoria; label: string }> = [
 ];
 
 const ETIQUETAS_ENTIDAD: Record<EntidadAuditoria, string> = {
-  PREPIZZA: "Prepizza",
   PEDIDO: "Pedido",
   CAJA: "Caja",
   STOCK: "Stock",
@@ -62,14 +60,6 @@ const ETIQUETAS_ENTIDAD: Record<EntidadAuditoria, string> = {
 };
 
 const ETIQUETAS_ACCION: Record<string, string> = {
-  PREPIZZA_VARIEDAD_GUARDADA: "Variedad de prepizza guardada",
-  PREPIZZA_COMERCIO_GUARDADO: "Comercio guardado",
-  PREPIZZA_CONTACTO_REGISTRADO: "Contacto con comercio registrado",
-  PREPIZZA_STOCK_REGISTRADO: "Movimiento de prepizzas registrado",
-  PREPIZZA_PEDIDO_CREADO: "Pedido de prepizzas creado",
-  PREPIZZA_PEDIDO_ENTREGADO: "Prepizzas entregadas",
-  PREPIZZA_COBRO_REGISTRADO: "Cobro de prepizzas registrado",
-  PREPIZZA_PEDIDO_CANCELADO: "Pedido de prepizzas cancelado",
 
   PEDIDO_ESTADO_CAMBIADO: "Cambio de estado del pedido",
   PEDIDO_CANCELADO: "Pedido cancelado",
@@ -93,11 +83,6 @@ const ETIQUETAS_ACCION: Record<string, string> = {
 };
 
 const ETIQUETAS_CAMPO: Record<string, string> = {
-  comercio: "Comercio",
-  variedad: "Variedad",
-  activa: "Activa",
-  proximoSeguimiento: "Próximo seguimiento",
-  nota: "Resultado del contacto",
   estadoPedido: "Estado del pedido",
   estadoPago: "Estado de pago",
   tipoPedido: "Tipo de pedido",
@@ -476,7 +461,7 @@ const Auditoria = () => {
                   <div className="auditoria-item-header">
                     <div>
                       <strong>{ETIQUETAS_ACCION[log.accion] ?? etiquetaValor(log.accion)}</strong>
-                      <span>{ETIQUETAS_ENTIDAD[log.entidad]}</span>
+                      <span>{ETIQUETAS_ENTIDAD[log.entidad] ?? "Registro histórico"}</span>
                     </div>
                     <time>{new Date(log.fecha).toLocaleString("es-AR")}</time>
                   </div>

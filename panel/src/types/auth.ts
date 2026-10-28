@@ -24,7 +24,6 @@ export const PERMISSIONS = {
   CASH_OPEN: 'cash:open',
   CASH_CLOSE: 'cash:close',
   CASH_CHARGE: 'cash:charge',
-  PREPIZZAS_OPERATE: 'prepizzas:operate',
   STOCK_ADJUST: 'stock:adjust',
   PRODUCTS_MANAGE: 'products:manage',
   REPORTS_VIEW: 'reports:view',
@@ -45,7 +44,6 @@ export const PERMISSIONS_BY_ROLE: Record<Rol, readonly Permission[]> = {
     PERMISSIONS.STOCK_ADJUST,
     PERMISSIONS.PRODUCTS_MANAGE,
     PERMISSIONS.REPORTS_VIEW,
-    PERMISSIONS.PREPIZZAS_OPERATE,
     PERMISSIONS.USERS_MANAGE,
   ],
   CAJERO: [
@@ -57,7 +55,6 @@ export const PERMISSIONS_BY_ROLE: Record<Rol, readonly Permission[]> = {
     PERMISSIONS.CASH_CLOSE,
     PERMISSIONS.CASH_CHARGE,
     PERMISSIONS.REPORTS_VIEW,
-    PERMISSIONS.PREPIZZAS_OPERATE,
   ],
   CHEF: [
     PERMISSIONS.ORDERS_CHANGE_STATUS,

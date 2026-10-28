@@ -32,7 +32,6 @@ const MovimientoStockSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
-  produccionPrepizzaClave: { type: String, default: null, index: true },
   pedidoId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Pedido',

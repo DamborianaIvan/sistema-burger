@@ -18,11 +18,20 @@ Se importó una instantánea de los archivos de código y configuración de ejem
 
 Modalidades configuradas por `ORDER_TYPES`; validación en el servicio de creación de pedidos y propagación al panel mediante login. Salón conservado, con navegación y alta deshabilitadas para el perfil actual. Nuevo logo SVG provisorio, categorías y tickets adaptados. Configuración local independiente con generación de JWT y MongoDB opcional mediante compose con replica set.
 
-Se conserva el resto del sistema, incluido el circuito de prepizzas. Todavía no se retiraron sus dependencias de reportes, movimientos de caja, auditoría o stock. Retirarlo o generalizarlo requiere una etapa específica y pruebas de regresión.
+## Segunda etapa
+
+La aplicación conserva únicamente los módulos aplicables al negocio. Se retiró el circuito mayorista heredado, sus modelos, rutas, servicios, pantallas, tipos, permisos, eventos de auditoría y agregaciones de ventas. No hay una opción para reactivarlo. Stock, ingredientes y recetas generales permanecen activos.
+
+No se ejecutan migraciones ni borrados sobre la base existente. Los movimientos contables y el historial de auditoría ya persistidos se conservan.
+
+Los puertos iniciales se separan: API 5001 y panel 5174 estricto, con orígenes locales explícitos. El arranque informa puerto, PID y orígenes efectivos, sin secretos. Si el puerto está ocupado, falla y cierra la conexión MongoDB en vez de anunciar una API iniciada.
+
+
+Las pruebas generales mantienen la regresión del sistema conservado, incluido salón. La suite de negocio verifica delivery/takeaway de punta a punta.
 
 ## Pendientes de decisión
 
-Menú definitivo, precios, recetas, variantes, extras por unidad, combos configurables, producción de medallones/preparaciones, venta a comercios y política de stock. No se agregaron funcionalidades para resolver estas decisiones sin definirlas.
+Menú definitivo, precios, recetas, variantes, extras por unidad, combos configurables, producción de medallones/preparaciones y política de stock. No se agregaron funcionalidades para resolver estas decisiones sin definirlas.
 
 ## Protecciones conservadas
 
