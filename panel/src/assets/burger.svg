@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Hamburguesa, logo provisorio">
+  <rect width="120" height="120" rx="30" fill="#1c1917"/>
+  <path d="M23 51c0-21 16-32 37-32s37 11 37 32Z" fill="#f8b844"/>
+  <g stroke="#fff5d9" stroke-width="4" stroke-linecap="round"><path d="m42 33 3-2m15-4 3 1m13 7 3 2"/></g>
+  <path d="m23 59 13 6 12-6 13 6 13-6 12 6 11-6" fill="none" stroke="#88b64b" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="22" y="70" width="76" height="13" rx="6" fill="#9c4e2e"/>
+  <path d="M24 89h72c-2 13-14 15-36 15S26 102 24 89Z" fill="#f8b844"/>
+</svg>

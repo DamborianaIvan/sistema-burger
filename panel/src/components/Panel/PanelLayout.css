@@ -1,0 +1,31 @@
+.panel-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.panel-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  padding: clamp(20px, 2.5vw, 36px);
+  overflow-x: hidden;
+}
+
+.panel-content > * {
+  width: min(100%, 1440px);
+  margin-inline: auto;
+}
+
+.panel-content h1,
+.panel-content h2,
+.panel-content .MuiTypography-h4,
+.panel-content .MuiTypography-h5 {
+  color: var(--color-contrast);
+}
+
+@media (max-width: 768px) {
+  .panel-layout { flex-direction: column; }
+  .panel-content { min-height: calc(100vh - 68px); padding: 18px 16px 32px; }
+}
+

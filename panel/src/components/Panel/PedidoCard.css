@@ -1,0 +1,59 @@
+.pedido-lectura {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: var(--color-contrast);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.pedido-lectura .MuiTypography-root,
+.pedido-lectura .MuiChip-root,
+.pedido-lectura .MuiButton-root,
+.pedido-lectura .MuiInputBase-root,
+.pedido-lectura .MuiInputLabel-root {
+  font-family: inherit;
+  letter-spacing: normal;
+}
+
+.pedido-lectura-productos {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pedido-lectura-producto {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+}
+
+.pedido-lectura-producto-cantidad {
+  flex-shrink: 0;
+  min-width: 2.25rem;
+  color: var(--color-primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pedido-lectura-producto-detalle { min-width: 0; }
+.pedido-lectura-producto-nombre { display: block; font-size: 1rem; font-weight: 700; line-height: 1.5; }
+.pedido-lectura-producto-categoria { display: block; margin-top: 2px; color: var(--color-muted); font-size: .875rem; line-height: 1.5; }
+
+.pedido-nota {
+  padding: 12px;
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  background: var(--color-warning-bg);
+}
+.pedido-nota-titulo { display: block; margin-bottom: 4px; font-weight: 700; }
+.pedido-nota-texto { white-space: pre-wrap; }
+

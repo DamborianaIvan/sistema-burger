@@ -1,0 +1,65 @@
+.cocina-container { padding: 0; }
+
+.cocina-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cocina-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.cocina-card {
+  height: 100%;
+  border-top: 3px solid var(--primary-500);
+}
+
+.cocina-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.cocina-card .MuiCardContent-root { display: flex; flex-direction: column; gap: 16px; }
+.cocina-card .cocina-card-header { margin-bottom: 0; flex-wrap: wrap; }
+.cocina-card .cocina-contexto { font-size: 1.25rem; font-weight: 700; line-height: 1.4; color: var(--color-primary); }
+.cocina-card .pedido-lectura-producto-nombre { font-size: 1.125rem; }
+.cocina-card .pedido-lectura-producto-cantidad { font-size: 1.25rem; }
+.cocina-card .pedido-nota { font-size: 1rem; }
+.cocina-card .MuiButton-root { margin-top: auto; }
+
+.cocina-estado {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+.cocina-estado > svg { color: var(--color-success); }
+
+@media (max-width: 768px) {
+  .cocina-container { padding: 0; }
+
+  .cocina-header {
+    flex-direction: column;
+  }
+
+  .cocina-header button {
+    align-self: stretch;
+  }
+}
+
+

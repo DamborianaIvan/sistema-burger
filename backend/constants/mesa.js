@@ -1,0 +1,15 @@
+export const FORMAS_MESA = Object.freeze({
+  RECTANGULAR: 'RECTANGULAR',
+  CUADRADA: 'CUADRADA',
+  REDONDA: 'REDONDA'
+});
+
+export const PLANO_MESAS = Object.freeze({
+  ANCHO: 1200,
+  ALTO: 700,
+  MESA_ANCHO_MIN: 80,
+  MESA_ANCHO_MAX: 280,
+  MESA_ALTO_MIN: 80,
+  MESA_ALTO_MAX: 220
+});
+

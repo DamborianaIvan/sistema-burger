@@ -1,0 +1,121 @@
+.mesas-page { padding: 0; }
+.mesas-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.mesas-title { display: flex; align-items: center; gap: .6rem; }
+.mesas-title h1 { margin: 0; font-size: 1.5rem; }
+.mesas-header p { margin: .35rem 0 0; color: var(--color-muted); }
+.mesas-header-actions { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: flex-end; }
+.mesas-refresh, .mesas-edit-layout, .mesas-save-layout, .mesas-cancel-layout, .mesas-new-table { display: inline-flex; align-items: center; gap: .4rem; border-radius: 8px; padding: .5rem .75rem; min-height: 40px; cursor: pointer; font-weight: 700; }
+.mesas-refresh, .mesas-cancel-layout { border: 1px solid var(--color-border-strong); background: #fff; color: var(--color-contrast); }
+.mesas-edit-layout { border: 1px solid var(--color-contrast); background: var(--color-contrast); color: #fff; }
+.mesas-new-table { border: 1px solid var(--color-primary); background: var(--primary-50); color: var(--color-primary); }
+.mesas-save-layout { border: 1px solid var(--color-success); background: var(--color-success); color: #fff; }
+.mesas-save-layout:disabled, .mesas-cancel-layout:disabled, .mesas-new-table:disabled { opacity: .6; cursor: wait; }
+
+.mesas-resumen { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: .75rem; }
+.resumen-chip { display: inline-flex; align-items: center; gap: .45rem; border-radius: 999px; padding: .3rem .65rem; font-size: .9rem; background: var(--color-surface-secondary); }
+.resumen-chip.libre { color: var(--color-success); background: var(--color-success-bg); }
+.resumen-chip.ocupada { color: var(--color-error); background: var(--color-error-bg); }
+.resumen-chip.editor { color: var(--color-primary); background: var(--primary-50); }
+.estado-dot { width: .6rem; height: .6rem; border-radius: 50%; background: currentColor; }
+
+.mesas-error, .mesas-success { border-radius: 10px; padding: .8rem 1rem; margin: 0 0 1rem; }
+.mesas-error { color: var(--color-error); background: var(--color-error-bg); }
+.mesas-success { color: var(--color-success); background: var(--color-success-bg); }
+.mesas-loading { color: var(--color-muted); }
+
+.salon-workspace { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; }
+.salon-workspace.editing { grid-template-columns: minmax(0, 1fr) 280px; }
+.salon-plano { position: relative; width: 100%; aspect-ratio: 12 / 7; overflow: hidden; border: 1px solid var(--color-border-strong); border-radius: 18px; background-color: var(--color-surface-raised); background-image: linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px); background-size: 4% 6.85%; box-shadow: inset 0 0 0 1px rgba(255,255,255,.6); touch-action: none; }
+.salon-workspace.editing .salon-plano { border-color: var(--primary-300); box-shadow: 0 0 0 3px rgba(47, 128, 237, .08); }
+
+.mesa-plano { position: absolute; z-index: 1; display: grid; place-items: center; border: 3px solid; background: #fff; user-select: none; cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease; transform-origin: center; min-width: 48px; min-height: 48px; }
+.editing .mesa-plano { cursor: grab; }
+.editing .mesa-plano:active { cursor: grabbing; }
+.mesa-plano.libre { border-color: var(--color-success); background: var(--color-success-bg); }
+.mesa-plano.ocupada { border-color: var(--color-error); background: var(--color-error-bg); }
+.mesa-plano.seleccionada { z-index: 5; box-shadow: 0 0 0 4px rgba(47, 128, 237, .24), 0 10px 30px rgba(16, 24, 40, .16); border-color: var(--primary-500); }
+.mesa-plano.rectangular { border-radius: 16px; }
+.mesa-plano.cuadrada { border-radius: 10px; }
+.mesa-plano.redonda { border-radius: 50%; }
+
+.mesa-plano-contenido { display: grid; place-items: center; gap: .12rem; width: 100%; pointer-events: none; color: var(--color-contrast); line-height: 1.05; }
+.mesa-plano-numero { font-size: clamp(1rem, 2vw, 1.8rem); font-weight: 900; color: var(--color-contrast); }
+.mesa-plano-estado { font-size: clamp(.5rem, .75vw, .7rem); font-weight: 800; }
+.mesa-plano.libre .mesa-plano-estado { color: var(--color-success); }
+.mesa-plano.ocupada .mesa-plano-estado { color: var(--color-error); }
+.mesa-plano-capacidad, .mesa-plano-pedido { display: inline-flex; align-items: center; gap: .2rem; font-size: clamp(.5rem, .75vw, .72rem); }
+.mesa-plano-pedido { max-width: 90%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.plano-editor-panel { position: sticky; top: 1rem; display: flex; flex-direction: column; gap: .65rem; padding: .85rem; border: 1px solid var(--color-border-strong); border-radius: 16px; background: #fff; }
+.plano-editor-panel h2 { margin: .2rem 0 0; }
+.editor-eyebrow { color: var(--color-muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 800; }
+.plano-editor-panel label { display: grid; gap: .35rem; color: var(--color-contrast); font-size: .85rem; font-weight: 700; }
+.plano-editor-panel select { width: 100%; border: 1px solid var(--color-border-strong); border-radius: 8px; padding: .6rem; background: #fff; }
+.plano-editor-panel input[type="range"] { width: 100%; }
+.plano-editor-panel label > span { display: inline-flex; align-items: center; gap: .3rem; color: var(--color-muted); font-size: .8rem; font-weight: 500; }
+.editor-position { display: flex; align-items: center; gap: .5rem; border-radius: 8px; padding: .7rem; background: var(--color-surface-secondary); color: var(--color-muted); font-size: .85rem; }
+.editor-help { margin: 0; color: var(--color-muted); font-size: .82rem; line-height: 1.45; }
+
+.mesa-modal-backdrop { position: fixed; inset: 0; z-index: 1200; display: grid; place-items: center; padding: 1rem; background: var(--overlay-dark); }
+.mesa-modal { position: relative; width: min(520px, 100%); max-height: 90vh; overflow: auto; border-radius: 18px; padding: 1.5rem; background: #fff; box-shadow: 0 24px 48px rgba(16, 24, 40, .24); }
+.mesa-modal-close { position: absolute; top: .8rem; right: .8rem; width: 34px; height: 34px; border: 0; border-radius: 50%; background: var(--color-surface-secondary); cursor: pointer; font-size: 1.35rem; }
+.mesa-modal-status { display: inline-flex; border-radius: 999px; padding: .3rem .65rem; font-size: .78rem; font-weight: 800; }
+.mesa-modal-status.libre { color: var(--color-success); background: var(--color-success-bg); }
+.mesa-modal-status.ocupada { color: var(--color-error); background: var(--color-error-bg); }
+.mesa-modal h2 { margin-bottom: .25rem; }
+.mesa-pedido-detalle { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); }
+.mesa-pedido-detalle ul { padding-left: 1.2rem; }
+.mesa-total { display: block; margin-top: .8rem; font-size: 1.1rem; }
+.mesa-comentario, .mesa-observaciones { margin-top: 1rem; border-radius: 8px; padding: .75rem; background: var(--color-surface-secondary); }
+.mesa-sin-pedido { margin-top: 1rem; }
+
+.mesa-action, .mesa-modal-action { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; border: 0; border-radius: 8px; background: var(--color-primary); color: #fff; cursor: pointer; font-weight: 700; text-decoration: none; }
+.mesa-action { width: 100%; margin-top: .75rem; padding: .55rem; }
+.mesa-modal-action { width: 100%; margin-top: 1rem; padding: .7rem; }
+.mesa-action:hover, .mesa-modal-action:hover { background: var(--color-hover); }
+.mesa-action:disabled, .mesa-modal-action:disabled { cursor: wait; opacity: .65; }
+.mesa-cancel-action, .mesa-modal-cancel-action { box-sizing: border-box; border: 1px solid var(--color-border-strong); border-radius: 8px; background: #fff; color: var(--color-muted); cursor: pointer; font-weight: 700; }
+.mesa-danger-action { border-color: var(--color-error); color: var(--color-error); }
+.mesa-danger-action:hover { background: var(--color-error-bg); }
+.mesa-cancel-action { width: 100%; margin-top: .45rem; padding: .5rem; }
+.mesa-modal-cancel-action { width: 100%; margin-top: .65rem; padding: .65rem; }
+
+@media (max-width: 1000px) {
+  .salon-workspace.editing { grid-template-columns: 1fr; }
+  .plano-editor-panel { position: static; }
+}
+
+@media (max-width: 700px) {
+  .mesas-page { padding: 0; }
+  .mesas-header { flex-direction: column; }
+  .mesas-header-actions { width: 100%; justify-content: flex-start; }
+  .salon-plano { min-height: 420px; aspect-ratio: auto; }
+  .mesa-plano-capacidad, .mesa-plano-pedido { display: none; }
+}
+
+.nueva-mesa-modal { width: min(560px, 100%); }
+.nueva-mesa-help { margin-top: -.25rem; color: var(--color-muted); line-height: 1.45; }
+.nueva-mesa-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.nueva-mesa-form label { display: grid; gap: .4rem; color: var(--color-contrast); font-size: .85rem; font-weight: 700; }
+.nueva-mesa-form label:last-child { grid-column: 1 / -1; }
+.nueva-mesa-form input, .nueva-mesa-form textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--color-border-strong); border-radius: 8px; padding: .65rem .75rem; font: inherit; background: #fff; }
+.nueva-mesa-form input:focus, .nueva-mesa-form textarea:focus { outline: 2px solid var(--primary-300); outline-offset: 1px; border-color: var(--primary-500); }
+.nueva-mesa-actions { display: flex; justify-content: flex-end; gap: .6rem; margin-top: 1.25rem; }
+
+@media (max-width: 560px) {
+  .nueva-mesa-form { grid-template-columns: 1fr; }
+  .nueva-mesa-form label:last-child { grid-column: auto; }
+}
+
+.editor-delete-table { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; width: 100%; border: 1px solid #fda29b; border-radius: 8px; background: #fff; color: var(--color-error); padding: .65rem .8rem; cursor: pointer; font-weight: 800; }
+.editor-delete-table:hover:not(:disabled) { background: var(--color-error-bg); }
+.editor-delete-table:disabled { cursor: not-allowed; opacity: .5; }
+.editor-delete-help { margin: -.4rem 0 0; color: var(--color-error); font-size: .78rem; line-height: 1.4; }
+
+
+/* Mantiene la escala 1200 × 700 del plano al limitar su tamaño en escritorio. */
+@media (min-width: 1001px) {
+  .salon-plano { width: min(100%, max(640px, calc((100dvh - 200px) * 12 / 7))); justify-self: center; }
+  .plano-editor-panel { max-height: calc(100dvh - 200px); overflow-y: auto; }
+}
+

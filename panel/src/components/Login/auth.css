@@ -1,0 +1,11 @@
+.auth-container { width: min(440px, calc(100% - 32px)); margin: clamp(36px, 8vh, 90px) auto; padding: clamp(24px, 4vw, 38px); display: flex; flex-direction: column; align-items: center; text-align: center; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 22px; box-shadow: var(--shadow-raised); }
+.auth-logo { width: 82px; height: 82px; object-fit: contain; margin-bottom: 16px; }
+.h2title { margin: 0 0 10px; color: var(--color-contrast); font-size: clamp(1.5rem, 3vw, 1.8rem); font-weight: 800; line-height: 1.2; }
+.auth-form { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 12px; }
+.auth-form .MuiFormControl-root { margin-block: 6px; }
+.auth-form button.login-button { width: 100%; min-height: 46px; margin-top: 12px; padding: 10px 16px; border: 0; border-radius: 10px; background: var(--color-primary); color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; }
+.auth-form button.login-button:hover { background: var(--color-hover); }
+.auth-link { margin: 20px 0 0; color: var(--color-muted); font-size: .88rem; }
+.auth-link a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; font-weight: 700; }
+@media (max-width: 480px) { .auth-container { margin: 24px auto; padding: 24px 20px; } }
+

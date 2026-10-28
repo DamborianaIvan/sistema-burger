@@ -1,0 +1,16 @@
+{
+  "name": "sistema-burger",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Panel y API de hamburguesería, derivados de Pepe’s Napoletana",
+  "engines": { "node": ">=22.9.0" },
+  "scripts": {
+    "setup": "node scripts/setup-local.mjs",
+    "install:apps": "npm --prefix backend ci && npm --prefix panel ci",
+    "dev:api": "npm --prefix backend start",
+    "dev:panel": "npm --prefix panel run dev -- --host 127.0.0.1 --port 5173 --strictPort",
+    "test": "npm --prefix backend test",
+    "build": "npm --prefix panel run build",
+    "lint": "npm --prefix panel run lint"
+  }
+}

@@ -1,0 +1,8 @@
+export const CATEGORIAS_PRODUCTO_BASE = Object.freeze([
+  'HAMBURGUESAS',
+  'ACOMPANAMIENTOS',
+  'BEBIDAS',
+  'POSTRES',
+  'ADICIONALES'
+]);
+
